@@ -16,16 +16,31 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Book {
+  _id: ID!
+  title: String!
+  author: String!
+  userId: ID!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
 type Query {
   helloWolrd: String!
   users: [User!]!
   user(id: String!): User!
+  books: [Book!]!
+  booksByUser(userId: String!): [Book!]!
+  book(id: String!): Book!
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(id: String!, updateUserInput: UpdateUserInput!): User!
   removeUser(id: String!): User!
+  createBook(createBookInput: CreateBookInput!): Book!
+  updateBook(id: String!, updateBookInput: UpdateBookInput!): Book!
+  removeBook(id: String!): Book!
 }
 
 input CreateUserInput {
@@ -38,4 +53,16 @@ input UpdateUserInput {
   email: String
   name: String
   age: Int
+}
+
+input CreateBookInput {
+  title: String!
+  author: String!
+  userId: ID!
+}
+
+input UpdateBookInput {
+  title: String
+  author: String
+  userId: ID
 }

@@ -6,6 +6,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 import { MongooseModule } from '@nestjs/mongoose';
 import { HelloWorldModule } from './hello-world/hello-world.module';
 import { UsersModule } from './users/users.module';
+import { BooksModule } from './books/books.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UsersModule } from './users/users.module';
     ),
     HelloWorldModule,
     UsersModule,
+    BooksModule,
   ],
   controllers: [],
   providers: [],
