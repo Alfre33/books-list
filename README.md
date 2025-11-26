@@ -1,99 +1,305 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 📚 API de Libros y Usuarios
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API GraphQL para gestionar usuarios y sus colecciones de libros, construida con NestJS, MongoDB y GraphQL.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Stack Tecnológico
 
-## Description
+- **NestJS** v11.0.1 - Framework progresivo de Node.js
+- **GraphQL** - Enfoque code-first con Apollo Server
+- **MongoDB** - Base de datos con Mongoose ORM
+- **TypeScript** - Desarrollo con tipado seguro
+- **Class Validator** - Validación de DTOs
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 📋 Requisitos Previos
 
-## Project setup
+- Node.js (v18 o superior)
+- Instancia de MongoDB ejecutándose localmente o cadena de conexión remota
+- npm o yarn
+
+## ⚙️ Instalación
 
 ```bash
-$ npm install
+npm install
 ```
 
-## Compile and run the project
+## 🔧 Configuración
+
+Crea un archivo `.env` basado en `.env.example` o configura la conexión a MongoDB en `app.module.ts`:
+
+```typescript
+MongooseModule.forRoot('mongodb://localhost:27017/books-db')
+```
+
+## 🏃 Ejecutar la Aplicación
 
 ```bash
-# development
-$ npm run start
+# Modo desarrollo con hot-reload
+npm run start:dev
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# Modo producción
+npm run start:prod
 ```
 
-## Run tests
+El GraphQL Playground estará disponible en: `http://localhost:3000/graphql`
+
+## 📖 Documentación de la API
+
+### Módulo de Usuarios
+
+#### Consultas (Queries)
+
+**Obtener todos los usuarios:**
+```graphql
+query {
+  users {
+    _id
+    name
+    email
+    age
+    createdAt
+    updatedAt
+  }
+}
+```
+
+**Obtener usuario por ID:**
+```graphql
+query {
+  user(id: "674123abc...") {
+    _id
+    name
+    email
+    age
+  }
+}
+```
+
+#### Mutaciones (Mutations)
+
+**Crear usuario:**
+```graphql
+mutation {
+  createUser(createUserInput: {
+    name: "Juan Pérez"
+    email: "juan@ejemplo.com"
+    age: 30
+  }) {
+    _id
+    name
+    email
+  }
+}
+```
+
+**Actualizar usuario:**
+```graphql
+mutation {
+  updateUser(
+    id: "674123abc..."
+    updateUserInput: {
+      name: "Juan Actualizado"
+      age: 31
+    }
+  ) {
+    _id
+    name
+    age
+  }
+}
+```
+
+**Eliminar usuario:**
+```graphql
+mutation {
+  removeUser(id: "674123abc...") {
+    _id
+    name
+  }
+}
+```
+
+### Módulo de Libros
+
+#### Consultas (Queries)
+
+**Obtener todos los libros:**
+```graphql
+query {
+  books {
+    _id
+    title
+    author
+    userId
+    createdAt
+    updatedAt
+  }
+}
+```
+
+**Obtener libro por ID:**
+```graphql
+query {
+  book(id: "674456def...") {
+    _id
+    title
+    author
+    userId
+  }
+}
+```
+
+**Obtener libros por usuario:**
+```graphql
+query {
+  booksByUser(userId: "674123abc...") {
+    _id
+    title
+    author
+  }
+}
+```
+
+#### Mutaciones (Mutations)
+
+**Crear libro:**
+```graphql
+mutation {
+  createBook(createBookInput: {
+    title: "Código Limpio"
+    author: "Robert Martin"
+    userId: "674123abc..."
+  }) {
+    _id
+    title
+    author
+    userId
+  }
+}
+```
+
+**Actualizar libro:**
+```graphql
+mutation {
+  updateBook(
+    id: "674456def..."
+    updateBookInput: {
+      title: "Código Limpio: Edición Actualizada"
+    }
+  ) {
+    _id
+    title
+    author
+  }
+}
+```
+
+**Eliminar libro:**
+```graphql
+mutation {
+  removeBook(id: "674456def...") {
+    _id
+    title
+  }
+}
+```
+
+## 🎯 Características
+
+### Validaciones
+- Validación de formato de email
+- Restricciones de longitud de cadenas (mín/máx)
+- Validación de ObjectId de MongoDB
+- Validación de rango de edad (1-150)
+
+### Reglas de Negocio
+- **Emails únicos**: Los usuarios no pueden tener emails duplicados
+- **Libros únicos por usuario**: Un mismo usuario no puede tener libros duplicados (mismo título + autor)
+- **Validación de usuario**: Los libros requieren una referencia válida de usuario
+- **Trimming automático**: Las cadenas se limpian automáticamente
+
+### Manejo de Errores
+- `NotFoundException` (404): Recurso no encontrado
+- `ConflictException` (409): Entradas duplicadas
+- Mensajes de error detallados en las respuestas de GraphQL
+
+## 🗄️ Esquema de Base de Datos
+
+### Colección User
+```typescript
+{
+  _id: ObjectId
+  name: string (3-100 caracteres)
+  email: string (único, email válido)
+  age: number (1-150)
+  createdAt: Date
+  updatedAt: Date
+}
+```
+
+### Colección Book
+```typescript
+{
+  _id: ObjectId
+  title: string (1-200 caracteres)
+  author: string (2-100 caracteres)
+  userId: ObjectId (ref: User)
+  createdAt: Date
+  updatedAt: Date
+}
+```
+
+**Índices:**
+- `{ email: 1 }` - Índice único en User.email
+- `{ userId: 1, title: 1, author: 1 }` - Índice compuesto único en Books
+
+## 📁 Estructura del Proyecto
+
+```
+src/
+├── users/
+│   ├── dto/
+│   │   ├── create-user.input.ts
+│   │   └── update-user.input.ts
+│   ├── entities/
+│   │   └── user.entity.ts
+│   ├── users.module.ts
+│   ├── users.resolver.ts
+│   └── users.service.ts
+├── books/
+│   ├── dto/
+│   │   ├── create-book.input.ts
+│   │   └── update-book.input.ts
+│   ├── entities/
+│   │   └── book.entity.ts
+│   ├── books.module.ts
+│   ├── books.resolver.ts
+│   └── books.service.ts
+├── app.module.ts
+└── main.ts
+```
+
+## 🛠️ Desarrollo
 
 ```bash
-# unit tests
-$ npm run test
+# Formatear código
+npm run format
 
-# e2e tests
-$ npm run test:e2e
+# Lintear código
+npm run lint
 
-# test coverage
-$ npm run test:cov
+# Construir para producción
+npm run build
 ```
 
-## Deployment
+## 📝 Notas
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+- La conexión a MongoDB debe estar activa antes de iniciar la aplicación
+- El esquema de GraphQL se genera automáticamente (enfoque code-first)
+- Todos los timestamps (createdAt, updatedAt) son gestionados automáticamente por MongoDB
+- ValidationPipe está configurado globalmente con `whitelist: true` para seguridad
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## 👤 Autor
 
-```bash
-$ npm install -g mau
-$ mau deploy
-```
+Implementación de prueba técnica para proceso de reclutamiento realizado por José Alfredo Gaspar.
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
 
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
