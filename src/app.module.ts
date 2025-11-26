@@ -5,6 +5,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { MongooseModule } from '@nestjs/mongoose';
 import { HelloWorldModule } from './hello-world/hello-world.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -13,6 +14,11 @@ import { HelloWorldModule } from './hello-world/hello-world.module';
       playground: false,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      formatError: (error) => ({
+        message: error.message,
+        code: error.extensions?.code,
+        status: error.extensions?.status,
+      }),
     }),
     MongooseModule.forRoot(
       process.env.MONGODB_URI || 'mongodb://localhost/nest',
@@ -21,6 +27,7 @@ import { HelloWorldModule } from './hello-world/hello-world.module';
       },
     ),
     HelloWorldModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],
